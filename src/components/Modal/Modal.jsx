@@ -15,7 +15,7 @@ const Modal = ({ onClose, src, alt }) => {
        }
     };
     
-  }, []);
+  }, [onClose]);
 
  
 
