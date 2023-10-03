@@ -26,46 +26,45 @@ const App = () => {
     setRequestName(newValue);
 
     if (newValue === '') {
-      Notiflix.Notify.info('Please fill out the search bar');      
-    };
-  }
-
-  //ф-ція до сторінки прибавляє 1 (викликається при натиску на кнопку load more)
-  const changePage = e => {
-    setPage(page + 1);
-  };
-
-  //показати кнопку load more
-  const showButton = () => {
-    if (showButton !== true) {
-      setShowBtnLoadMore(true);
+      Notiflix.Notify.info('Please fill out the search bar');
     }
   };
 
-  //сховати кнопку load more
-  const hideButton = () => {
-    if (showButton !== false) {
-      setShowBtnLoadMore(false);
-    }
-  };
- 
-
-  /*******************************************/
-  //помилка, яка виникає коли пропадає інтернет
-  const errorApi = error => {
-    hideButton();
-    Notiflix.Notify.info('Something went wrong :( Check your network connection');
-    setIsLoading(false);
-  };
-  // /*******************************************/
- 
   //componentDidMount + componentDidUpdate
   useEffect(() => {
     if (requestName === '') {
       return;
     }
 
+    getApiData();
+
     /*******************************************/
+
+    //показати кнопку load more
+    function showButton() {
+      if (showButton !== true) {
+        setShowBtnLoadMore(true);
+      }
+    }
+
+    //сховати кнопку load more
+    function hideButton() {
+      if (showButton !== false) {
+        setShowBtnLoadMore(false);
+      }
+    }
+
+    /*******************************************/
+    //помилка, яка виникає коли пропадає інтернет
+    function errorApi(error) {
+      hideButton();
+      Notiflix.Notify.info(
+        'Something went wrong :( Check your network connection'
+      );
+      setIsLoading(false);
+    }
+    // /*******************************************/
+
     async function getApiData() {
       try {
         setIsLoading(true);
@@ -84,7 +83,7 @@ const App = () => {
 
     /***************************************** */
     //при успішному запиті до бекенду
-    const renderData = async data => {
+    function renderData(data) {
       setIsLoading(false);
 
       //якщо набрали строку, по якому на бекенді немає картинок
@@ -104,18 +103,22 @@ const App = () => {
 
       showButton();
       setIsLoading(false);
-    };
-
-    getApiData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestName, page]);
 
   /*******************************************/
- 
+
+  //ф-ція до сторінки прибавляє 1 (викликається при натиску на кнопку load more)
+  function changePage(e) {
+    setPage(page + 1);
+  }
+
   return (
     <div>
       <Searchbar changeStateAppParam={getFirstRequestParameters}></Searchbar>
       <ImageGallery
-        gallery={gallery}
+        galleryList={gallery}
         // changeItems={this.changeItems}
       ></ImageGallery>
       {isLoading && (

@@ -4,7 +4,7 @@ import css from './ImageGallery.module.css';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import Modal from '../Modal/Modal';
 
-const ImageGallery = ({ gallery }) => {
+const ImageGallery = ({ galleryList }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalUrl, setModalUrl] = useState('');
   const [modalAlt, setModalAlt] = useState('');
@@ -24,19 +24,15 @@ const ImageGallery = ({ gallery }) => {
 
   return (
     <div>
-      <ul className={css.gallery} onClick={handleClick}>
-        {gallery.map(picture => (
+      <ul className={css.galleryStyle} onClick={handleClick}>
+        {galleryList.map(picture => (
           <li key={picture.id} className={css.item}>
             <ImageGalleryItem dataPicture={picture}></ImageGalleryItem>
           </li>
         ))}
       </ul>
       {showModal && (
-        <Modal
-          onClose={onClose}
-          src={modalUrl}
-          alt={modalAlt}
-        ></Modal>
+        <Modal onClose={onClose} src={modalUrl} alt={modalAlt}></Modal>
       )}
     </div>
   );
